@@ -1,39 +1,93 @@
 <!doctype html>
 
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <title>Финансовый ассистент</title>
-  <meta name="description" content="Финансовый ассистент">
-  <script
-          src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.js"
-          integrity="sha256-uSZEyo3op39kRbkPBCvexeR9nMPfeST+u/1pxI7eQeU="
-          crossorigin="anonymous"></script>
-  <script
-          src="https://code.jquery.com/jquery-3.2.1.js"
-          integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
-          crossorigin="anonymous"></script>
-  <script src="js/main.js"></script>
-  <link rel="stylesheet" href="css/theme.css" type="text/css"/>
+    <meta charset="utf-8">
+    <title>Финансовый ассистент</title>
+    <meta name="description" content="Финансовый ассистент">
+    <link rel="stylesheet" href="css/theme.css" type="text/css"/>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.js"
+            integrity="sha256-uSZEyo3op39kRbkPBCvexeR9nMPfeST+u/1pxI7eQeU="
+            crossorigin="anonymous"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.js"
+            integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+            crossorigin="anonymous"></script>
+    <script>
+        var income = [];
+        var free_income = [];
+        var month_payments = [];
+        var week_payments = [];
+        var daily_payments = [];
+
+        $(document).ready(function(){
+            $("#add_income").click(function(){
+                var id = "i_" + make_id();
+                income.push(id);
+                $(".income").append(function(){
+                    return "<div class=\"sidebox\" id=\""+ id +"\">"
+                        + "<label for=\"" + id + "_name\">Название</label>"
+                        + "<input type=\"text\" id=\""+ id +"_name\">"
+                        + "<label for=\"" + id + "_price\">Сумма</label>"
+                        + "<input type=\"number\" id=\""+ id +"_price\">"
+                        + "<label for=\"" + id + "_date\">День</label>"
+                        + "<input type=\"number\" id=\""+ id +"_date\">"
+                        + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                        + "</div>"
+                });
+                $("#" + id).on("click", ".delete_input", function () {
+                    $("#" + id).remove();
+                });
+            });
+        });
+
+        function make_id() {
+            var text = "";
+            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            for (var i = 0; i < 5; i++)
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+            return text;
+        }
+    </script>
 </head>
 <body>
-    <div class="input-sidebar">
-        <form>
-            <input type="number" name="current_cash">
-        </form>
-    </div>
-    <div class="wrapper">
-        <div class="sub-wrapper">
-            <div class="graphic">
-                1
-            </div>
-            <div class="total-chart">
-                2
-            </div>
+<div class="input-sidebar">
+    <label for="cash">Баланс</label>
+    <input type="number" id="cash">
+    <label for="bound_date">Расчетная точка</label>
+    <input type="date" id="bound_date">
+    <h3>Ежемесячная прибыль</h3>
+    <div class="income"></div>
+    <button id="add_income">+</button>
+    <h3>Халява</h3>
+    <div class="free_income"></div>
+    <button id="add_free_income">+</button>
+    <h3>Расходы ежемесячные</h3>
+    <div class="month_payments"></div>
+    <input type="button" id="add_month_payments" value="+" onclick="add_month_payments();">
+    <h3>Расходы еженедельные</h3>
+    <div class="week_payments"></div>
+    <input type="button" id="add_week_payments" value="+" onclick="add_week_payments();">
+    <h3>Ежедневные расходы</h3>
+    <div class="daily_payments"></div>
+    <input type="button" id="add_daily_payments" value="+" onclick="add_daily_payments();">
+    <h3>Внеплановые расходы</h3>
+    <div class="extra_payments"></div>
+    <input type="button" id="add_extra_payments" value="+" onclick="add_extra_payments();">
+</div>
+<div class="wrapper">
+    <div class="sub-wrapper">
+        <div class="graphic">
+            1
         </div>
-        <div class="report-table">
-                3
+        <div class="total-chart">
+            2
         </div>
     </div>
+    <div class="report-table">
+        3
+    </div>
+</div>
 </body>
 </html>
