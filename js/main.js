@@ -246,14 +246,33 @@ $(document).ready(function(){
                 }
             });
             daily_payments_data.forEach(function (t) {
-
+                if(change >= t[1]){
+                    change -= t[1]
+                }
+                else
+                {
+                    change += 200;
+                    cash -= 200;
+                    cash_out += 200;
+                }
             });
 
             periodic_payments_data.forEach(function (t) {
-
+                if(t[3] == 0){
+                    cash -= t[1];
+                    cash_out += t[1];
+                    t[3] = t[2];
+                }
+                else
+                {
+                    t[3] -= 1;
+                }
             });
             extra_payments_data.forEach(function (t) {
-
+                if(temp_date.getTime() == new Date(t[2]).getTime()){
+                    cash -= t[1];
+                    cash_out += t[1];
+                }
             });
 
             if(cash_in != 0 && cash_out !=0){
@@ -269,15 +288,25 @@ $(document).ready(function(){
         var myChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: [1,2,3,4,5],
+                labels: labels,
                 datasets: [{
                         label: 'Деньги',
-                        data: [10,20,30,40,50],
+                        data: dataset_total,
+                        borderWidth: 1,
+                        borderColor: 'rgba(255,99,132,1)'
+                    },
+                    {
+                        label: 'Прибыль',
+                        type: 'bar',
+                        data: dataset_in,
+                        borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 1
                     },
                     {
                         label: 'Убытки',
-                        data: [50,40,30,20,10],
+                        type: 'bar',
+                        data: dataset_out,
+                        borderColor: 'rgba(255, 206, 86, 1)',
                         borderWidth: 1
                     }]
             },
