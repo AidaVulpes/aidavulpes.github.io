@@ -20,6 +20,7 @@
         var month_payments = [];
         var week_payments = [];
         var daily_payments = [];
+        var extra_payments = [];
 
         $(document).ready(function(){
             $("#add_income").click(function(){
@@ -28,16 +29,233 @@
                 $(".income").append(function(){
                     return "<div class=\"sidebox\" id=\""+ id +"\">"
                         + "<label for=\"" + id + "_name\">Название</label>"
-                        + "<input type=\"text\" id=\""+ id +"_name\">"
+                        + "<input type=\"text\" id=\""+ id +"_name\"><br />"
                         + "<label for=\"" + id + "_price\">Сумма</label>"
-                        + "<input type=\"number\" id=\""+ id +"_price\">"
+                        + "<input type=\"number\" id=\""+ id +"_price\"><br />"
                         + "<label for=\"" + id + "_date\">День</label>"
-                        + "<input type=\"number\" id=\""+ id +"_date\">"
+                        + "<input type=\"number\" id=\""+ id +"_date\"><br />"
                         + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
                         + "</div>"
                 });
                 $("#" + id).on("click", ".delete_input", function () {
                     $("#" + id).remove();
+                });
+            });
+            $("#add_free_income").click(function(){
+                var id = "fi_" + make_id();
+                free_income.push(id);
+                $(".free_income").append(function(){
+                    return "<div class=\"sidebox\" id=\""+ id +"\">"
+                        + "<label for=\"" + id + "_name\">Название</label>"
+                        + "<input type=\"text\" id=\""+ id +"_name\"><br />"
+                        + "<label for=\"" + id + "_price\">Сумма</label>"
+                        + "<input type=\"number\" id=\""+ id +"_price\"><br />"
+                        + "<label for=\"" + id + "_date\">День</label>"
+                        + "<input type=\"date\" id=\""+ id +"_date\"><br />"
+                        + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                        + "</div>"
+                });
+                $("#" + id).on("click", ".delete_input", function () {
+                    $("#" + id).remove();
+                });
+            });
+            $("#add_month_payments").click(function(){
+                var id = "i_" + make_id();
+                month_payments.push(id);
+                $(".month_payments").append(function(){
+                    return "<div class=\"sidebox\" id=\""+ id +"\">"
+                        + "<label for=\"" + id + "_name\">Название</label>"
+                        + "<input type=\"text\" id=\""+ id +"_name\"><br />"
+                        + "<label for=\"" + id + "_price\">Сумма</label>"
+                        + "<input type=\"number\" id=\""+ id +"_price\"><br />"
+                        + "<label for=\"" + id + "_date\">День</label>"
+                        + "<input type=\"number\" id=\""+ id +"_date\"><br />"
+                        + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                        + "</div>"
+                });
+                $("#" + id).on("click", ".delete_input", function () {
+                    $("#" + id).remove();
+                });
+            });
+            $("#add_week_payments").click(function(){
+                var id = "i_" + make_id();
+                week_payments.push(id);
+                $(".week_payments").append(function(){
+                    return "<div class=\"sidebox\" id=\""+ id +"\">"
+                        + "<label for=\"" + id + "_name\">Название</label>"
+                        + "<input type=\"text\" id=\""+ id +"_name\"><br />"
+                        + "<label for=\"" + id + "_price\">Сумма</label>"
+                        + "<input type=\"number\" id=\""+ id +"_price\"><br />"
+                        + "<label for=\"" + id + "_date\">День</label>"
+                        + "<input type=\"number\" id=\""+ id +"_date\"><br />"
+                        + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                        + "</div>"
+                });
+                $("#" + id).on("click", ".delete_input", function () {
+                    $("#" + id).remove();
+                });
+            });
+            $("#add_daily_payments").click(function(){
+                var id = "i_" + make_id();
+                daily_payments.push(id);
+                $(".daily_payments").append(function(){
+                    return "<div class=\"sidebox\" id=\""+ id +"\">"
+                        + "<label for=\"" + id + "_name\">Название</label>"
+                        + "<input type=\"text\" id=\""+ id +"_name\"><br />"
+                        + "<label for=\"" + id + "_price\">Сумма</label>"
+                        + "<input type=\"number\" id=\""+ id +"_price\"><br />"
+                        + "<label for=\"" + id + "_date\">День</label>"
+                        + "<input type=\"number\" id=\""+ id +"_date\"><br />"
+                        + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                        + "</div>"
+                });
+                $("#" + id).on("click", ".delete_input", function () {
+                    $("#" + id).remove();
+                });
+            });
+            $("#add_extra_payments").click(function(){
+                var id = "i_" + make_id();
+                extra_payments.push(id);
+                $(".extra_payments").append(function(){
+                    return "<div class=\"sidebox\" id=\""+ id +"\">"
+                        + "<label for=\"" + id + "_name\">Название</label>"
+                        + "<input type=\"text\" id=\""+ id +"_name\"><br />"
+                        + "<label for=\"" + id + "_price\">Сумма</label>"
+                        + "<input type=\"number\" id=\""+ id +"_price\"><br />"
+                        + "<label for=\"" + id + "_date\">День</label>"
+                        + "<input type=\"number\" id=\""+ id +"_date\"><br />"
+                        + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                        + "</div>"
+                });
+                $("#" + id).on("click", ".delete_input", function () {
+                    $("#" + id).remove();
+                });
+            });
+            $("#calc").click(function () {
+                var cash = $("#cash").val();
+                var daily_cash = $("#cash").val();
+                var end_date = new Date(2018,6,4);
+                var start_date = Date.parse($("#bound_date").val());
+                var temp_date = new Date(start_date);
+
+                var income_data = [];
+                var free_income_data = [];
+                var month_payments_data = [];
+                var week_payments_data = [];
+                var daily_payments_data = [];
+                var extra_payments_data = [];
+
+                window.income.forEach(function (t, i, ts) {
+                    var t_arr = [];
+                    t_arr.push($("#" + t + "_name").val());
+                    t_arr.push($("#" + t + "_price").val());
+                    t_arr.push($("#" + t + "_date").val());
+                    income_data.push(t_arr);
+                });
+                window.free_income.forEach(function (t, i, ts) {
+                    var t_arr = [];
+                    t_arr.push($("#" + t + "_name").val());
+                    t_arr.push($("#" + t + "_price").val());
+                    t_arr.push($("#" + t + "_date").val());
+                    free_income_data.push(t_arr);
+                });
+                window.month_payments.forEach(function (t, i, ts) {
+                    var t_arr = [];
+                    t_arr.push($("#" + t + "_name").val());
+                    t_arr.push($("#" + t + "_price").val());
+                    t_arr.push($("#" + t + "_date").val());
+                    month_payments_data.push(t_arr);
+                });window.week_payments.forEach(function (t, i, ts) {
+                    var t_arr = [];
+                    t_arr.push($("#" + t + "_name").val());
+                    t_arr.push($("#" + t + "_price").val());
+                    t_arr.push($("#" + t + "_date").val());
+                    week_payments_data.push(t_arr);
+                });window.daily_payments.forEach(function (t, i, ts) {
+                    var t_arr = [];
+                    t_arr.push($("#" + t + "_name").val());
+                    t_arr.push($("#" + t + "_price").val());
+                    t_arr.push($("#" + t + "_date").val());
+                    daily_payments_data.push(t_arr);
+                });window.extra_payments.forEach(function (t, i, ts) {
+                    var t_arr = [];
+                    t_arr.push($("#" + t + "_name").val());
+                    t_arr.push($("#" + t + "_price").val());
+                    t_arr.push($("#" + t + "_date").val());
+                    extra_payments_data.push(t_arr);
+                });
+                var labels = [];
+                var dataset_total = [];
+
+                $(".report-table").append(JSON.stringify(income));
+                while (end_date.getTime() !== temp_date.getTime()){
+                    var cash_in = 0;
+                    var cash_out = 0;
+                    income_data.forEach(function (t) {
+                        if(temp_date.getDate() === income_data.item(2)){
+                            cash_in += income_data.item(1);
+                        }
+                        if(temp_date.getTime() === Data.parse(free_income_data.item(2)).getTime()){
+                            cash_in += free_income_data.item(1);
+                        }
+                        if(temp_date.getTime() === Data.parse(extra_payments_data.item(2)).getTime()){
+                            cash_out += extra_payments_data.item(1);
+                        }
+                        if(temp_date.getDate() === month_payments_data.item(2)){
+                            cash_out += month_payments_data.item(1);
+                        }
+                        if(temp_date.getDay() === week_payments_data.item(2)){
+                            cash_out += week_payments_data.item(1);
+                        }
+                        if(temp_date.getDay() === daily_payments_data.item(2)){
+                            if(daily_cash < daily_payments_data.item(1))
+                            cash_out += daily_payments_data.item(1);
+                        }
+
+                    });
+                    if(cash_in != 0 && cash_out !=0){
+                        labels.push(temp_date.toLocaleDateString());
+                        dataset_total.push(cash);
+                    }
+                    temp_date.setDate(temp_date.getDate() + 1);
+                }
+
+                var ctx = document.getElementById("graphic").getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                        datasets: [{
+                            label: '# of Votes',
+                            data: [12, 19, 3, 5, 2, 3],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255,99,132,1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true
+                                }
+                            }]
+                        }
+                    }
                 });
             });
         });
@@ -54,9 +272,10 @@
 <body>
 <div class="input-sidebar">
     <label for="cash">Баланс</label>
-    <input type="number" id="cash">
+    <input type="number" id="cash"><br />
     <label for="bound_date">Расчетная точка</label>
-    <input type="date" id="bound_date">
+    <input type="date" id="bound_date"><br />
+    <button id="calc">Расчитать</button>
     <h3>Ежемесячная прибыль</h3>
     <div class="income"></div>
     <button id="add_income">+</button>
@@ -65,28 +284,27 @@
     <button id="add_free_income">+</button>
     <h3>Расходы ежемесячные</h3>
     <div class="month_payments"></div>
-    <input type="button" id="add_month_payments" value="+" onclick="add_month_payments();">
+    <button id="add_month_payments">+</button>
     <h3>Расходы еженедельные</h3>
     <div class="week_payments"></div>
-    <input type="button" id="add_week_payments" value="+" onclick="add_week_payments();">
+    <button id="add_week_payments">+</button>
     <h3>Ежедневные расходы</h3>
     <div class="daily_payments"></div>
-    <input type="button" id="add_daily_payments" value="+" onclick="add_daily_payments();">
+    <button id="add_daily_payments">+</button>
     <h3>Внеплановые расходы</h3>
     <div class="extra_payments"></div>
-    <input type="button" id="add_extra_payments" value="+" onclick="add_extra_payments();">
+    <button id="add_extra_payments">+</button>
 </div>
 <div class="wrapper">
     <div class="sub-wrapper">
         <div class="graphic">
-            1
+            <canvas id="graphic"></canvas>
         </div>
         <div class="total-chart">
-            2
+            <canvas id="total-chart"></canvas>
         </div>
     </div>
     <div class="report-table">
-        3
     </div>
 </div>
 </body>
