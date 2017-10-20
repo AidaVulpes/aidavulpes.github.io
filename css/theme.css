@@ -2,10 +2,6 @@ html, body {
     height: 100%;
 }
 
-div {
-    border: 3px solid black;
-}
-
 body {
     display: flex;
     flex-direction: row;
@@ -28,8 +24,6 @@ body {
     order: 2;
     flex: 1 1 auto;
     align-self: auto;
-    width: 85%;
-    min-height: 1000px;
     background-color: beige;
 }
 
@@ -44,7 +38,7 @@ body {
 
 .graphic {
     flex: 1 1 auto;
-    width: 75%;
+    width: 100%;
     background-color: blanchedalmond;
 }
 

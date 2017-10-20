@@ -24,7 +24,10 @@
     <input type="number" id="change"><br />
     <label for="bound_date">Расчетная точка</label>
     <input type="date" id="bound_date"><br />
+    <label for="end_date">Конечная точка</label>
+    <input type="date" id="end_date"><br />
     <button id="calc">Расчитать</button>
+    <button id="reg">Загрузить пресет</button>
     <h3>Ежемесячная прибыль</h3>
     <div class="income"></div>
     <button id="add_income">+</button>
@@ -48,13 +51,9 @@
     <button id="add_extra_payments">+</button>
 </div>
 <div class="wrapper">
-    <div class="sub-wrapper">
-        <div class="graphic">
-            <canvas id="graphic"></canvas>
-        </div>
-        <div class="total-chart">
-            <canvas id="total-chart"></canvas>
-        </div>
+    <div class="charts">
+        <canvas id="graphic"></canvas>
+        <canvas id="total-chart"></canvas>
     </div>
     <div class="report-table">
     </div>
