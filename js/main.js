@@ -197,7 +197,23 @@ $(document).ready(function(){
                 + "<label for=\"" + id + "_price\" >Сумма</label><br />"
                 + "<input type=\"number\" id=\""+ id +"_price\" value=\"10500\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_date\" value=\"25\"><br />"
+                + "<input type=\"number\" id=\""+ id +"_date\" value=\"20\"><br />"
+                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "</div>"
+        });
+        $("#" + id).on("click", ".delete_input", function () {
+            $("#" + id).remove();
+        });
+        id = "mp_" + make_id();
+        month_payments.push(({id : id}));
+        $(".month_payments").append(function(){
+            return "<div class=\"sidebox\" id=\""+ id +"\">"
+                + "<label for=\"" + id + "_name\" >Название</label><br />"
+                + "<input type=\"text\" id=\""+ id +"_name\" value=\"Интернет\"><br />"
+                + "<label for=\"" + id + "_price\" >Сумма</label><br />"
+                + "<input type=\"number\" id=\""+ id +"_price\" value=\"710\"><br />"
+                + "<label for=\"" + id + "_date\">День</label><br />"
+                + "<input type=\"number\" id=\""+ id +"_date\" value=\"7\"><br />"
                 + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
                 + "</div>"
         });
@@ -225,11 +241,42 @@ $(document).ready(function(){
         $(".week_payments").append(function(){
             return "<div class=\"sidebox\" id=\""+ id +"\">"
                 + "<label for=\"" + id + "_name\">Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\" value=\"Еда\"><br />"
+                + "<input type=\"text\" id=\""+ id +"_name\" value=\"Еда на начало недели\"><br />"
                 + "<label for=\"" + id + "_price\">Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\" value=\"1700\"><br />"
+                + "<input type=\"number\" id=\""+ id +"_price\" value=\"600\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
                 + "<input type=\"number\" id=\""+ id +"_date\" value=\"0\"><br />"
+                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "</div>"
+        });
+        $("#" + id).on("click", ".delete_input", function () {
+            $("#" + id).remove();
+        });
+        id = "wp_" + make_id();
+        week_payments.push(({id : id}));
+        $(".week_payments").append(function(){
+            return "<div class=\"sidebox\" id=\""+ id +"\">"
+                + "<label for=\"" + id + "_name\">Название</label><br />"
+                + "<input type=\"text\" id=\""+ id +"_name\" value=\"Еда до выходных\"><br />"
+                + "<label for=\"" + id + "_price\">Сумма</label><br />"
+                + "<input type=\"number\" id=\""+ id +"_price\" value=\"600\"><br />"
+                + "<label for=\"" + id + "_date\">День</label><br />"
+                + "<input type=\"number\" id=\""+ id +"_date\" value=\"3\"><br />"
+                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "</div>"
+        });
+        $("#" + id).on("click", ".delete_input", function () {
+            $("#" + id).remove();
+        });id = "wp_" + make_id();
+        week_payments.push(({id : id}));
+        $(".week_payments").append(function(){
+            return "<div class=\"sidebox\" id=\""+ id +"\">"
+                + "<label for=\"" + id + "_name\">Название</label><br />"
+                + "<input type=\"text\" id=\""+ id +"_name\" value=\"Еда на выходные\"><br />"
+                + "<label for=\"" + id + "_price\">Сумма</label><br />"
+                + "<input type=\"number\" id=\""+ id +"_price\" value=\"600\"><br />"
+                + "<label for=\"" + id + "_date\">День</label><br />"
+                + "<input type=\"number\" id=\""+ id +"_date\" value=\"5\"><br />"
                 + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
                 + "</div>"
         });
@@ -339,6 +386,7 @@ $(document).ready(function(){
         var dataset_total = [];
         var dataset_in = [];
         var dataset_out = [];
+        var cash_today = 0;
 
         while (end_date.getTime() >= temp_date.getTime()){
             var cash_in = 0;
@@ -412,6 +460,11 @@ $(document).ready(function(){
                 dataset_in.push(cash_in);
                 dataset_out.push(cash_out);
             }
+
+            var today = new Date();
+            if(temp_date.getFullYear() == today.getFullYear() && temp_date.getMonth() == today.getMonth() && temp_date.getDate() == today.getDate()){
+                cash_today = cash;
+            }
             temp_date.setDate(temp_date.getDate() + 1);
         }
         var income_dataset = {
@@ -451,7 +504,7 @@ $(document).ready(function(){
             payment_dataset.data.push(t.part);
         });
         periodic_payments.forEach(function (t) {
-            payment_dataset.labels.push(t.data[0]);
+            payment_dataset.labels.push(t.name);
             payment_dataset.color.push(getRandomColor());
             payment_dataset.data.push(t.part);
         });
@@ -460,8 +513,18 @@ $(document).ready(function(){
             payment_dataset.color.push(getRandomColor());
             payment_dataset.data.push(t.part);
         });
+
+
+
+        $("#short-resolt").html(
+            "<h3>Сумма, которая должна быть сегодня:" + cash_today + "<br />" +
+            "Итоговый остаток:" + cash + "<br />" +
+            "Всего прибыли: " + income_dataset.data.reduce((a, b) => a + b, 0) + "<br />" +
+            "Всего трат:" + payment_dataset.data.reduce((a, b) => a + b, 0) + "</h3><br />"
+        );
         $(".charts").html("<canvas id=\"graphic\"></canvas>\n" +
             "<canvas id=\"total-chart\"></canvas>");
+
         var ctx = document.getElementById("graphic").getContext('2d');
         var graph = new Chart(ctx, {
             type: 'line',
@@ -512,15 +575,14 @@ $(document).ready(function(){
         var myChart = new Chart(tctx, {
             type: 'pie',
             data: {
+                labels: income_dataset.labels.concat(payment_dataset.labels),
                 datasets: [{
-                        labels: income_dataset.labels,
-                        backgroundColor: income_dataset.color,
-                        data: income_dataset.data
+                        backgroundColor: payment_dataset.color.concat(payment_dataset.color),
+                        data: income_dataset.data.concat(payment_dataset.color)
                     },
                     {
-                        labels: payment_dataset.labels,
-                        backgroundColor: payment_dataset.color,
-                        data: payment_dataset.data
+                        backgroundColor: payment_dataset.color.concat(payment_dataset.color),
+                        data: income_dataset.color.concat(payment_dataset.data)
                     }]
             }
         });
