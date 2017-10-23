@@ -17,46 +17,47 @@
     <script src="js/main.js"></script>
 </head>
 <body>
-<div class="input-sidebar">
-    <label for="cash">Баланс</label>
-    <input type="number" id="cash"><br />
-    <label for="change">Мелочь</label>
-    <input type="number" id="change"><br />
-    <label for="bound_date">Расчетная точка</label>
-    <input type="date" id="bound_date"><br />
-    <label for="end_date">Конечная точка</label>
-    <input type="date" id="end_date"><br />
-    <button id="calc">Расчитать</button>
-    <button id="reg">Загрузить пресет</button>
-    <h3>Ежемесячная прибыль</h3>
-    <div class="income"></div>
-    <button id="add_income">+</button>
-    <h3>Халява</h3>
-    <div class="free_income"></div>
-    <button id="add_free_income">+</button>
-    <h3>Расходы ежемесячные</h3>
-    <div class="month_payments"></div>
-    <button id="add_month_payments">+</button>
-    <h3>Расходы еженедельные</h3>
-    <div class="week_payments"></div>
-    <button id="add_week_payments">+</button>
-    <h3>Ежедневные расходы</h3>
-    <div class="daily_payments"></div>
-    <button id="add_daily_payments">+</button>
-    <h3>Периодические расходы</h3>
-    <div class="periodic_payments"></div>
-    <button id="add_periodic_payments">+</button>
-    <h3>Внеплановые расходы</h3>
-    <div class="extra_payments"></div>
-    <button id="add_extra_payments">+</button>
-</div>
-<div class="wrapper">
-    <div id="short-resolt"></div>
-    <div class="charts">
-        <canvas id="graphic"></canvas>
-        <canvas id="income-chart"></canvas>
-        <canvas id="payment-chart"></canvas>
+    <div class="sidebar">
+        <label for="cash">Баланс</label>
+        <input type="number" id="cash"><br />
+        <label for="change">Мелочь</label>
+        <input type="number" id="change"><br />
+        <label for="bound_date">Расчетная точка</label>
+        <input type="date" id="bound_date"><br />
+        <label for="end_date">Конечная точка</label>
+        <input type="date" id="end_date"><br />
+        <div class="btn" id="calc">Расчитать</div>
+        <div class="btn" id="reg">Загрузить пресет</div>
+        <h3>Ежемесячная прибыль</h3>
+        <div class="income"></div>
+        <div class="btn" id="add_income">+</div>
+        <h3>Халява</h3>
+        <div class="free_income"></div>
+        <div class="btn" id="add_free_income">+</div>
+        <h3>Расходы ежемесячные</h3>
+        <div class="month_payments"></div>
+        <div class="btn" id="add_month_payments">+</div>
+        <h3>Расходы еженедельные</h3>
+        <div class="week_payments"></div>
+        <div class="btn" id="add_week_payments">+</div>
+        <h3>Ежедневные расходы</h3>
+        <div class="daily_payments"></div>
+        <div class="btn" id="add_daily_payments">+</div>
+        <h3>Периодические расходы</h3>
+        <div class="periodic_payments"></div>
+        <div class="btn" id="add_periodic_payments">+</div>
+        <h3>Внеплановые расходы</h3>
+        <div class="extra_payments"></div>
+        <div class="btn" id="add_extra_payments">+</div>
     </div>
-</div>
+    <div class="container">
+        <div id="short-resolt"></div>
+        <canvas id="graphic"></canvas>
+        <div class="charts">
+            <canvas id="income-chart"></canvas>
+            <canvas id="payment-chart"></canvas>
+        </div>
+        <div class="resolt-table"></div>
+    </div>
 </body>
 </html>

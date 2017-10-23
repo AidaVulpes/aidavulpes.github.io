@@ -23,6 +23,7 @@ $(document).ready(function(){
         });
         $("#" + id).on("click", ".delete_input", function () {
             $("#" + id).remove();
+            income.remove(income.indexOf(id));
         });
     });
     $("#add_free_income").click(function(){
@@ -383,6 +384,8 @@ $(document).ready(function(){
         var labels = [];
         var temp_date = new Date(start_date);
 
+        var table_dataset = [];
+
         var dataset_total = [];
         var dataset_in = [];
         var dataset_out = [];
@@ -397,6 +400,7 @@ $(document).ready(function(){
                     t.part +=  t.data[0];
                     cash += t.data[0];
                     cash_in += t.data[0];
+                    table_dataset.push([temp_date.toLocaleDateString(), t.name, t.data[0], 0, cash, change]);
                 }
             });
             free_income.forEach(function (t) {
@@ -404,6 +408,7 @@ $(document).ready(function(){
                     t.part +=  t.data[0];
                     cash += t.data[0];
                     cash_in += t.data[0];
+                    table_dataset.push([temp_date.toLocaleDateString(), t.name, t.data[0], 0, cash, change]);
                 }
             });
 
@@ -412,6 +417,7 @@ $(document).ready(function(){
                     t.part +=  t.data[0];
                     cash -= t.data[0];
                     cash_out += t.data[0];
+                    table_dataset.push([temp_date.toLocaleDateString(), t.name, 0, t.data[0], cash, change]);
                 }
             });
             week_payments.forEach(function (t) {
@@ -419,11 +425,13 @@ $(document).ready(function(){
                     t.part +=  t.data[0];
                     cash -= t.data[0];
                     cash_out += t.data[0];
+                    table_dataset.push([temp_date.toLocaleDateString(), t.name, 0, t.data[0], cash, change]);
                 }
             });
             daily_payments.forEach(function (t) {
                 if(change >= t.data[0]){
                     change -= t.data[0]
+                    table_dataset.push([temp_date.toLocaleDateString(), t.name, 0, "0 (" + t.data[0] +")", cash, change]);
                 }
                 else
                 {
@@ -431,6 +439,8 @@ $(document).ready(function(){
                     change += 200;
                     cash -= 200;
                     cash_out += 200;
+                    change -=t.data[0];
+                    table_dataset.push([temp_date.toLocaleDateString(), t.name, "0 (200)", "200 (" + t.data[0] +")", cash, change]);
                 }
             });
 
@@ -440,6 +450,7 @@ $(document).ready(function(){
                     cash -= t.data[0];
                     cash_out += t.data[0];
                     t.data[2] = t.data[1];
+                    table_dataset.push([temp_date.toLocaleDateString(), t.name, 0, t.data[0], cash, change]);
                 }
                 else
                 {
@@ -586,6 +597,15 @@ $(document).ready(function(){
                     }]
             }
         });
+
+        var table = "<table class=\"table-fill\" width=100%><thead><tr><th>Дата</th><th>Описание</th><th>Прибыль</th><th>Траты</th><th>Балланс</th><th>Наличка</th></tr></thead><tbody class=\"table-hover\">";
+
+        table_dataset.forEach(function (t) {
+           table += "<tr><td>" + t[0] + "</td><td>" + t[1] + "</td><td>" + t[2] + "</td><td>" + t[3] + "</td><td>" + t[4] + "</td><td>" + t[5] + "</td></tr>";
+        });
+        table += "</tbody><tfoot><td></td></td><td>ИТОГ</td><td>" + income_dataset.data.reduce((a, b) => a + b, 0) + "</td><td>" + payment_dataset.data.reduce((a, b) => a + b, 0) + "</td><td>" + cash + "</td><td>" + change+ "</td></tr></tfoot></table>";
+
+        $(".resolt-table").html(table);
     });
 });
 
