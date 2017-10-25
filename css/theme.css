@@ -165,5 +165,9 @@ td:last-child {
 }
 
 label, input {
-    margin-left: 5px;
+    margin: 5px;
+}
+
+input {
+    width: 235px;
 }

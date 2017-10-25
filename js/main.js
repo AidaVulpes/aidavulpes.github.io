@@ -6,6 +6,29 @@ var daily_payments = [];
 var extra_payments = [];
 var periodic_payments = [];
 
+function flush() {
+    $("#cash").removeAttr('value');
+    $("#bound_date").removeAttr('value');
+    $("#end_date").removeAttr('value');
+    $("#change").removeAttr('value');
+
+    $(".income").empty();
+    $(".free_income").empty();
+    $(".month_payments").empty();
+    $(".week_payments").empty();
+    $(".daily_payments").empty();
+    $(".periodic_payments").empty();
+    $(".extra_payments").empty();
+
+    income = [];
+    free_income = [];
+    month_payments = [];
+    week_payments = [];
+    daily_payments = [];
+    extra_payments = [];
+    periodic_payments = [];
+}
+
 $(document).ready(function(){
     $("#add_income").click(function(){
         var id = "i_" + make_id();
@@ -18,12 +41,11 @@ $(document).ready(function(){
                 + "<input type=\"number\" id=\""+ id +"_price\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
                 + "<input type=\"number\" id=\""+ id +"_date\"><br />"
-                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        $("#" + id).on("click", ".delete_input", function () {
+        $(document.body).on("click", "#" + id + "_del", function () {
             $("#" + id).remove();
-            income.remove(income.indexOf(id));
         });
     });
     $("#add_free_income").click(function(){
@@ -37,10 +59,10 @@ $(document).ready(function(){
                 + "<input type=\"number\" id=\""+ id +"_price\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
                 + "<input type=\"date\" id=\""+ id +"_date\"><br />"
-                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "<div class= value=\""+ id +"\">-</div>"
                 + "</div>"
         });
-        $("#" + id).on("click", ".delete_input", function () {
+        $(document.body).on("click", "#" + id + "_del", function () {
             $("#" + id).remove();
         });
     });
@@ -55,11 +77,11 @@ $(document).ready(function(){
                 + "<input type=\"number\" id=\""+ id +"_price\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
                 + "<input type=\"number\" id=\""+ id +"_date\"><br />"
-                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        $("#" + id).on("click", ".delete_input", function () {
-            $("#" + id).remove();
+        $(document.body).on("click", "#" + id + "_del", function () {
+            $("#" + id).remove();            
         });
     });
     $("#add_week_payments").click(function(){
@@ -73,10 +95,10 @@ $(document).ready(function(){
                 + "<input type=\"number\" id=\""+ id +"_price\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
                 + "<input type=\"number\" id=\""+ id +"_date\"><br />"
-                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        $("#" + id).on("click", ".delete_input", function () {
+        $(document.body).on("click", "#" + id + "_del", function () {
             $("#" + id).remove();
         });
     });
@@ -89,10 +111,10 @@ $(document).ready(function(){
                 + "<input type=\"text\" id=\""+ id +"_name\"><br />"
                 + "<label for=\"" + id + "_price\">Сумма</label><br />"
                 + "<input type=\"number\" id=\""+ id +"_price\"><br />"
-                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        $("#" + id).on("click", ".delete_input", function () {
+        $(document.body).on("click", "#" + id + "_del", function () {
             $("#" + id).remove();
         });
     });
@@ -107,10 +129,10 @@ $(document).ready(function(){
                 + "<input type=\"number\" id=\""+ id +"_price\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
                 + "<input type=\"date\" id=\""+ id +"_date\"><br />"
-                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        $("#" + id).on("click", ".delete_input", function () {
+        $(document.body).on("click", "#" + id + "_del", function () {
             $("#" + id).remove();
         });
     });
@@ -127,22 +149,27 @@ $(document).ready(function(){
                 + "<input type=\"number\" id=\""+ id +"_period\"><br />"
                 + "<label for=\"" + id + "_left\">Осталось до выплаты</label><br />"
                 + "<input type=\"number\" id=\""+ id +"_left\"><br />"
-                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        $("#" + id).on("click", ".delete_input", function () {
+        $(document.body).on("click", "#" + id + "_del", function () {
             $("#" + id).remove();
         });
     });
 
+    $("#flush").click(function(){
+        flush();
+    });
+
     $("#reg").click(function () {
+        flush();
         $("#cash").val(118233);
         $("#bound_date").val("2017-10-20");
         $("#end_date").val("2018-06-04");
         $("#change").val(20);
-        var id = "";
-        id = "i_" + make_id();
+        var id = "i_" + make_id();
         income.push(({id : id}));
+
         $(".income").append(function(){
             return "<div class=\"sidebox\" id=\""+ id +"\">"
                 + "<label for=\"" + id + "_name\" >Название</label><br />"
@@ -151,11 +178,12 @@ $(document).ready(function(){
                 + "<input type=\"number\" id=\""+ id +"_price\" value=\"3521\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
                 + "<input type=\"number\" id=\""+ id +"_date\" value=\"10\"><br />"
-                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        $("#" + id).on("click", ".delete_input", function () {
-            $("#" + id).remove();
+        var i1_id = id;
+        $(document.body).on("click", "#" + id + "_del", function () {
+            $("#" + i1_id).remove();
         });
         id = "i_" + make_id();
         income.push(({id : id}));
@@ -167,11 +195,12 @@ $(document).ready(function(){
                 + "<input type=\"number\" id=\""+ id +"_price\" value=\"3874\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
                 + "<input type=\"number\" id=\""+ id +"_date\" value=\"25\"><br />"
-                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        $("#" + id).on("click", ".delete_input", function () {
-            $("#" + id).remove();
+        var i2_id = id;
+        $(document.body).on("click", "#" + id + "_del", function () {
+            $("#" + i2_id).remove();
         });
         id = "i_" + make_id();
         income.push(({id : id}));
@@ -183,11 +212,12 @@ $(document).ready(function(){
                 + "<input type=\"number\" id=\""+ id +"_price\" value=\"1725\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
                 + "<input type=\"number\" id=\""+ id +"_date\" value=\"25\"><br />"
-                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        $("#" + id).on("click", ".delete_input", function () {
-            $("#" + id).remove();
+        var i3_id = id;
+        $(document.body).on("click", "#" + id + "_del", function () {
+            $("#" + i3_id).remove();
         });
         id = "mp_" + make_id();
         month_payments.push(({id : id}));
@@ -199,11 +229,12 @@ $(document).ready(function(){
                 + "<input type=\"number\" id=\""+ id +"_price\" value=\"10500\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
                 + "<input type=\"number\" id=\""+ id +"_date\" value=\"20\"><br />"
-                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        $("#" + id).on("click", ".delete_input", function () {
-            $("#" + id).remove();
+        var m1_id = id;
+        $(document.body).on("click", "#" + id + "_del", function () {
+            $("#" + m1_id).remove();
         });
         id = "mp_" + make_id();
         month_payments.push(({id : id}));
@@ -215,11 +246,12 @@ $(document).ready(function(){
                 + "<input type=\"number\" id=\""+ id +"_price\" value=\"710\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
                 + "<input type=\"number\" id=\""+ id +"_date\" value=\"7\"><br />"
-                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        $("#" + id).on("click", ".delete_input", function () {
-            $("#" + id).remove();
+        var m2_id = id;
+        $(document.body).on("click", "#" + id + "_del", function () {
+            $("#" + m2_id).remove();
         });
         id = "mp_" + make_id();
         month_payments.push(({id : id}));
@@ -231,11 +263,12 @@ $(document).ready(function(){
                 + "<input type=\"number\" id=\""+ id +"_price\" value=\"170\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
                 + "<input type=\"number\" id=\""+ id +"_date\" value=\"23\"><br />"
-                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        $("#" + id).on("click", ".delete_input", function () {
-            $("#" + id).remove();
+        var m3_id = id;
+        $(document.body).on("click", "#" + id + "_del", function () {
+            $("#" + m3_id).remove();
         });
         id = "wp_" + make_id();
         week_payments.push(({id : id}));
@@ -247,11 +280,12 @@ $(document).ready(function(){
                 + "<input type=\"number\" id=\""+ id +"_price\" value=\"600\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
                 + "<input type=\"number\" id=\""+ id +"_date\" value=\"0\"><br />"
-                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        $("#" + id).on("click", ".delete_input", function () {
-            $("#" + id).remove();
+        var w1_id = id;
+        $(document.body).on("click", "#" + id + "_del", function () {
+            $("#" + w1_id).remove();
         });
         id = "wp_" + make_id();
         week_payments.push(({id : id}));
@@ -263,11 +297,12 @@ $(document).ready(function(){
                 + "<input type=\"number\" id=\""+ id +"_price\" value=\"600\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
                 + "<input type=\"number\" id=\""+ id +"_date\" value=\"3\"><br />"
-                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        $("#" + id).on("click", ".delete_input", function () {
-            $("#" + id).remove();
+        var w2_id = id;
+        $(document.body).on("click", "#" + id + "_del", function () {
+            $("#" + w2_id).remove();
         });id = "wp_" + make_id();
         week_payments.push(({id : id}));
         $(".week_payments").append(function(){
@@ -278,11 +313,12 @@ $(document).ready(function(){
                 + "<input type=\"number\" id=\""+ id +"_price\" value=\"600\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
                 + "<input type=\"number\" id=\""+ id +"_date\" value=\"5\"><br />"
-                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        $("#" + id).on("click", ".delete_input", function () {
-            $("#" + id).remove();
+        var w3_id = id;
+        $(document.body).on("click", "#" + id + "_del", function () {
+            $("#" + w3_id).remove();
         });
         id = "dp_" + make_id();
         daily_payments.push(({id : id}));
@@ -292,11 +328,12 @@ $(document).ready(function(){
                 + "<input type=\"text\" id=\""+ id +"_name\" value=\"Автобус\"><br />"
                 + "<label for=\"" + id + "_price\">Сумма</label><br />"
                 + "<input type=\"number\" id=\""+ id +"_price\" value=\"30\"><br />"
-                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        $("#" + id).on("click", ".delete_input", function () {
-            $("#" + id).remove();
+        var d_id = id;
+        $(document.body).on("click", "#" + id + "_del", function () {
+            $("#" + d_id).remove();
         });
         id = "pp_" + make_id();
         periodic_payments.push(({id : id}));
@@ -310,10 +347,10 @@ $(document).ready(function(){
                 + "<input type=\"number\" id=\""+ id +"_period\" value=\"28\"><br />"
                 + "<label for=\"" + id + "_left\">Осталось до выплаты</label><br />"
                 + "<input type=\"number\" id=\""+ id +"_left\" value=\"21\"><br />"
-                + "<button class=\"delete_input\" value=\""+ id +"\">-</button>"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        $("#" + id).on("click", ".delete_input", function () {
+        $(document.body).on("click", "#" + id + "_del", function () {
             $("#" + id).remove();
         });
     });
