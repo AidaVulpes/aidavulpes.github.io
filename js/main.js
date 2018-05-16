@@ -1,10 +1,10 @@
-var income = [];
-var free_income = [];
-var month_payments = [];
-var week_payments = [];
-var daily_payments = [];
-var extra_payments = [];
-var periodic_payments = [];
+let income = [];
+let free_income = [];
+let month_payments = [];
+let week_payments = [];
+let daily_payments = [];
+let extra_payments = [];
+let periodic_payments = [];
 
 function flush() {
     $("#cash").removeAttr('value');
@@ -19,6 +19,15 @@ function flush() {
     $(".daily_payments").empty();
     $(".periodic_payments").empty();
     $(".extra_payments").empty();
+    $(".container").empty().html(
+        '<div id="short-result"></div>' +
+        '<canvas id="graphic"></canvas>' +
+        '<div class="charts">' +
+        '<canvas id="income-chart"></canvas>' +
+        '<canvas id="payment-chart"></canvas>' +
+        '</div>' +
+        '<div class="result-table"></div>'
+    );
 
     income = [];
     free_income = [];
@@ -29,18 +38,18 @@ function flush() {
     periodic_payments = [];
 }
 
-$(document).ready(function(){
-    $("#add_income").click(function(){
-        var id = "i_" + make_id();
-        income.push({id : id});
-        $(".income").append(function(){
-            return "<div class=\"sidebox\" id=\""+ id +"\">"
+$(document).ready(function () {
+    $("#add_income").click(function () {
+        const id = "i_" + make_id();
+        income.push({id: id});
+        $(".income").append(function () {
+            return "<div class=\"sidebox\" id=\"" + id + "\">"
                 + "<label for=\"" + id + "_name\">Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\"><br />"
+                + "<input type=\"text\" id=\"" + id + "_name\"><br />"
                 + "<label for=\"" + id + "_price\">Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_price\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_date\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_date\"><br />"
                 + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
@@ -48,53 +57,35 @@ $(document).ready(function(){
             $("#" + id).remove();
         });
     });
-    $("#add_free_income").click(function(){
-        var id = "fi_" + make_id();
-        free_income.push(({id : id}));
-        $(".free_income").append(function(){
-            return "<div class=\"sidebox\" id=\""+ id +"\">"
+    $("#add_free_income").click(function () {
+        const id = "fi_" + make_id();
+        free_income.push(({id: id}));
+        $(".free_income").append(function () {
+            return "<div class=\"sidebox\" id=\"" + id + "\">"
                 + "<label for=\"" + id + "_name\">Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\"><br />"
+                + "<input type=\"text\" id=\"" + id + "_name\"><br />"
                 + "<label for=\"" + id + "_price\">Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_price\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
-                + "<input type=\"date\" id=\""+ id +"_date\"><br />"
-                + "<div class= value=\""+ id +"\">-</div>"
+                + "<input type=\"date\" id=\"" + id + "_date\"><br />"
+                + "<div class= value=\"" + id + "\">-</div>"
                 + "</div>"
         });
         $(document.body).on("click", "#" + id + "_del", function () {
             $("#" + id).remove();
         });
     });
-    $("#add_month_payments").click(function(){
-        var id = "mp_" + make_id();
-        month_payments.push(({id : id}));
-        $(".month_payments").append(function(){
-            return "<div class=\"sidebox\" id=\""+ id +"\">"
+    $("#add_month_payments").click(function () {
+        const id = "mp_" + make_id();
+        month_payments.push(({id: id}));
+        $(".month_payments").append(function () {
+            return "<div class=\"sidebox\" id=\"" + id + "\">"
                 + "<label for=\"" + id + "_name\">Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\"><br />"
+                + "<input type=\"text\" id=\"" + id + "_name\"><br />"
                 + "<label for=\"" + id + "_price\">Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_price\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_date\"><br />"
-                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
-                + "</div>"
-        });
-        $(document.body).on("click", "#" + id + "_del", function () {
-            $("#" + id).remove();            
-        });
-    });
-    $("#add_week_payments").click(function(){
-        var id = "wp_" + make_id();
-        week_payments.push(({id : id}));
-        $(".week_payments").append(function(){
-            return "<div class=\"sidebox\" id=\""+ id +"\">"
-                + "<label for=\"" + id + "_name\">Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\"><br />"
-                + "<label for=\"" + id + "_price\">Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\"><br />"
-                + "<label for=\"" + id + "_date\">День</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_date\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_date\"><br />"
                 + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
@@ -102,33 +93,17 @@ $(document).ready(function(){
             $("#" + id).remove();
         });
     });
-    $("#add_daily_payments").click(function(){
-        var id = "dp_" + make_id();
-        daily_payments.push(({id : id}));
-        $(".daily_payments").append(function(){
-            return "<div class=\"sidebox\" id=\""+ id +"\">"
+    $("#add_week_payments").click(function () {
+        const id = "wp_" + make_id();
+        week_payments.push(({id: id}));
+        $(".week_payments").append(function () {
+            return "<div class=\"sidebox\" id=\"" + id + "\">"
                 + "<label for=\"" + id + "_name\">Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\"><br />"
+                + "<input type=\"text\" id=\"" + id + "_name\"><br />"
                 + "<label for=\"" + id + "_price\">Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\"><br />"
-                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
-                + "</div>"
-        });
-        $(document.body).on("click", "#" + id + "_del", function () {
-            $("#" + id).remove();
-        });
-    });
-    $("#add_extra_payments").click(function(){
-        var id = "ep_" + make_id();
-        extra_payments.push(({id : id}));
-        $(".extra_payments").append(function(){
-            return "<div class=\"sidebox\" id=\""+ id +"\">"
-                + "<label for=\"" + id + "_name\">Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\"><br />"
-                + "<label for=\"" + id + "_price\">Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_price\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
-                + "<input type=\"date\" id=\""+ id +"_date\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_date\"><br />"
                 + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
@@ -136,19 +111,53 @@ $(document).ready(function(){
             $("#" + id).remove();
         });
     });
-    $("#add_periodic_payments").click(function(){
-        var id = "pp_" + make_id();
-        periodic_payments.push(({id : id}));
-        $(".periodic_payments").append(function(){
-            return "<div class=\"sidebox\" id=\""+ id +"\">"
+    $("#add_daily_payments").click(function () {
+        const id = "dp_" + make_id();
+        daily_payments.push(({id: id}));
+        $(".daily_payments").append(function () {
+            return "<div class=\"sidebox\" id=\"" + id + "\">"
                 + "<label for=\"" + id + "_name\">Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\"><br />"
+                + "<input type=\"text\" id=\"" + id + "_name\"><br />"
                 + "<label for=\"" + id + "_price\">Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_price\"><br />"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
+                + "</div>"
+        });
+        $(document.body).on("click", "#" + id + "_del", function () {
+            $("#" + id).remove();
+        });
+    });
+    $("#add_extra_payments").click(function () {
+        const id = "ep_" + make_id();
+        extra_payments.push(({id: id}));
+        $(".extra_payments").append(function () {
+            return "<div class=\"sidebox\" id=\"" + id + "\">"
+                + "<label for=\"" + id + "_name\">Название</label><br />"
+                + "<input type=\"text\" id=\"" + id + "_name\"><br />"
+                + "<label for=\"" + id + "_price\">Сумма</label><br />"
+                + "<input type=\"number\" id=\"" + id + "_price\"><br />"
+                + "<label for=\"" + id + "_date\">День</label><br />"
+                + "<input type=\"date\" id=\"" + id + "_date\"><br />"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
+                + "</div>"
+        });
+        $(document.body).on("click", "#" + id + "_del", function () {
+            $("#" + id).remove();
+        });
+    });
+    $("#add_periodic_payments").click(function () {
+        const id = "pp_" + make_id();
+        periodic_payments.push(({id: id}));
+        $(".periodic_payments").append(function () {
+            return "<div class=\"sidebox\" id=\"" + id + "\">"
+                + "<label for=\"" + id + "_name\">Название</label><br />"
+                + "<input type=\"text\" id=\"" + id + "_name\"><br />"
+                + "<label for=\"" + id + "_price\">Сумма</label><br />"
+                + "<input type=\"number\" id=\"" + id + "_price\"><br />"
                 + "<label for=\"" + id + "_period\">Период</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_period\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_period\"><br />"
                 + "<label for=\"" + id + "_left\">Осталось до выплаты</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_left\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_left\"><br />"
                 + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
@@ -157,196 +166,215 @@ $(document).ready(function(){
         });
     });
 
-    $("#flush").click(function(){
+    $("#flush").click(function () {
         flush();
     });
 
     $("#reg").click(function () {
         flush();
-        $("#cash").val(118233);
-        $("#bound_date").val("2017-10-20");
-        $("#end_date").val("2018-06-04");
-        $("#change").val(20);
-        var id = "i_" + make_id();
-        income.push(({id : id}));
 
-        $(".income").append(function(){
-            return "<div class=\"sidebox\" id=\""+ id +"\">"
+        const today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth() + 1; //January is 0!
+        const year_flush = today.getFullYear();
+
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+
+        $("#cash").val(0);
+        $("#bound_date").val(year_flush + '-' + mm + '-' + dd);
+        $("#end_date").val("2018-11-07");
+        $("#change").val(0);
+        let id = "i_" + make_id();
+        income.push(({id: id}));
+
+        let income_obj = $(".income");
+        let mp_obj = $(".month_payments");
+        let wp_obj = $(".week_payments");
+
+        income_obj.append(function () {
+            return "<div class=\"sidebox\" id=\"" + id + "\">"
                 + "<label for=\"" + id + "_name\" >Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\" value=\"Аванс\"><br />"
+                + "<input type=\"text\" id=\"" + id + "_name\" value=\"Аванс\"><br />"
                 + "<label for=\"" + id + "_price\" >Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\" value=\"3521\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_price\" value=\"8090\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_date\" value=\"10\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_date\" value=\"10\"><br />"
                 + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        var i1_id = id;
+        const i1_id = id;
         $(document.body).on("click", "#" + id + "_del", function () {
             $("#" + i1_id).remove();
         });
         id = "i_" + make_id();
-        income.push(({id : id}));
-        $(".income").append(function(){
-            return "<div class=\"sidebox\" id=\""+ id +"\">"
+        income.push(({id: id}));
+        income_obj.append(function () {
+            return "<div class=\"sidebox\" id=\"" + id + "\">"
                 + "<label for=\"" + id + "_name\" >Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\" value=\"Зарплата\"><br />"
+                + "<input type=\"text\" id=\"" + id + "_name\" value=\"Зарплата\"><br />"
                 + "<label for=\"" + id + "_price\" >Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\" value=\"3874\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_price\" value=\"8090\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_date\" value=\"25\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_date\" value=\"25\"><br />"
                 + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        var i2_id = id;
+        const i2_id = id;
         $(document.body).on("click", "#" + id + "_del", function () {
             $("#" + i2_id).remove();
         });
-        id = "i_" + make_id();
-        income.push(({id : id}));
-        $(".income").append(function(){
-            return "<div class=\"sidebox\" id=\""+ id +"\">"
-                + "<label for=\"" + id + "_name\" >Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\" value=\"Стипендия\"><br />"
-                + "<label for=\"" + id + "_price\" >Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\" value=\"1725\"><br />"
-                + "<label for=\"" + id + "_date\">День</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_date\" value=\"25\"><br />"
-                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
-                + "</div>"
-        });
-        var i3_id = id;
-        $(document.body).on("click", "#" + id + "_del", function () {
-            $("#" + i3_id).remove();
-        });
         id = "mp_" + make_id();
-        month_payments.push(({id : id}));
-        $(".month_payments").append(function(){
-            return "<div class=\"sidebox\" id=\""+ id +"\">"
+        month_payments.push(({id: id}));
+        mp_obj.append(function () {
+            return "<div class=\"sidebox\" id=\"" + id + "\">"
                 + "<label for=\"" + id + "_name\" >Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\" value=\"Квартира\"><br />"
+                + "<input type=\"text\" id=\"" + id + "_name\" value=\"Квартира\"><br />"
                 + "<label for=\"" + id + "_price\" >Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\" value=\"10500\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_price\" value=\"10500\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_date\" value=\"20\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_date\" value=\"20\"><br />"
                 + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        var m1_id = id;
+        const m1_id = id;
         $(document.body).on("click", "#" + id + "_del", function () {
             $("#" + m1_id).remove();
         });
         id = "mp_" + make_id();
-        month_payments.push(({id : id}));
-        $(".month_payments").append(function(){
-            return "<div class=\"sidebox\" id=\""+ id +"\">"
+        month_payments.push(({id: id}));
+        mp_obj.append(function () {
+            return "<div class=\"sidebox\" id=\"" + id + "\">"
                 + "<label for=\"" + id + "_name\" >Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\" value=\"Интернет\"><br />"
+                + "<input type=\"text\" id=\"" + id + "_name\" value=\"Интернет\"><br />"
                 + "<label for=\"" + id + "_price\" >Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\" value=\"710\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_price\" value=\"710\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_date\" value=\"7\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_date\" value=\"7\"><br />"
                 + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        var m2_id = id;
+        const m2_id = id;
         $(document.body).on("click", "#" + id + "_del", function () {
             $("#" + m2_id).remove();
         });
         id = "mp_" + make_id();
-        month_payments.push(({id : id}));
-        $(".month_payments").append(function(){
-            return "<div class=\"sidebox\" id=\""+ id +"\">"
+        month_payments.push(({id: id}));
+        mp_obj.append(function () {
+            return "<div class=\"sidebox\" id=\"" + id + "\">"
                 + "<label for=\"" + id + "_name\" >Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\" value=\"ЯМ\"><br />"
+                + "<input type=\"text\" id=\"" + id + "_name\" value=\"ЯМ\"><br />"
                 + "<label for=\"" + id + "_price\" >Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\" value=\"170\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_price\" value=\"100\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_date\" value=\"23\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_date\" value=\"23\"><br />"
                 + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        var m3_id = id;
+        const m3_id = id;
         $(document.body).on("click", "#" + id + "_del", function () {
             $("#" + m3_id).remove();
         });
-        id = "wp_" + make_id();
-        week_payments.push(({id : id}));
-        $(".week_payments").append(function(){
-            return "<div class=\"sidebox\" id=\""+ id +"\">"
-                + "<label for=\"" + id + "_name\">Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\" value=\"Еда на начало недели\"><br />"
-                + "<label for=\"" + id + "_price\">Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\" value=\"600\"><br />"
+        id = "mp_" + make_id();
+        month_payments.push(({id: id}));
+        mp_obj.append(function () {
+            return "<div class=\"sidebox\" id=\"" + id + "\">"
+                + "<label for=\"" + id + "_name\" >Название</label><br />"
+                + "<input type=\"text\" id=\"" + id + "_name\" value=\"Сервер\"><br />"
+                + "<label for=\"" + id + "_price\" >Сумма</label><br />"
+                + "<input type=\"number\" id=\"" + id + "_price\" value=\"200\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_date\" value=\"0\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_date\" value=\"21\"><br />"
                 + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        var w1_id = id;
+        const m4_id = id;
+        $(document.body).on("click", "#" + id + "_del", function () {
+            $("#" + m4_id).remove();
+        });
+        id = "wp_" + make_id();
+        week_payments.push(({id: id}));
+        wp_obj.append(function () {
+            return "<div class=\"sidebox\" id=\"" + id + "\">"
+                + "<label for=\"" + id + "_name\">Название</label><br />"
+                + "<input type=\"text\" id=\"" + id + "_name\" value=\"Еда на начало недели\"><br />"
+                + "<label for=\"" + id + "_price\">Сумма</label><br />"
+                + "<input type=\"number\" id=\"" + id + "_price\" value=\"600\"><br />"
+                + "<label for=\"" + id + "_date\">День</label><br />"
+                + "<input type=\"number\" id=\"" + id + "_date\" value=\"0\"><br />"
+                + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
+                + "</div>"
+        });
+        const w1_id = id;
         $(document.body).on("click", "#" + id + "_del", function () {
             $("#" + w1_id).remove();
         });
         id = "wp_" + make_id();
-        week_payments.push(({id : id}));
-        $(".week_payments").append(function(){
-            return "<div class=\"sidebox\" id=\""+ id +"\">"
+        week_payments.push(({id: id}));
+        wp_obj.append(function () {
+            return "<div class=\"sidebox\" id=\"" + id + "\">"
                 + "<label for=\"" + id + "_name\">Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\" value=\"Еда до выходных\"><br />"
+                + "<input type=\"text\" id=\"" + id + "_name\" value=\"Еда до выходных\"><br />"
                 + "<label for=\"" + id + "_price\">Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\" value=\"600\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_price\" value=\"600\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_date\" value=\"3\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_date\" value=\"3\"><br />"
                 + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        var w2_id = id;
+        const w2_id = id;
         $(document.body).on("click", "#" + id + "_del", function () {
             $("#" + w2_id).remove();
-        });id = "wp_" + make_id();
-        week_payments.push(({id : id}));
-        $(".week_payments").append(function(){
-            return "<div class=\"sidebox\" id=\""+ id +"\">"
+        });
+        id = "wp_" + make_id();
+        week_payments.push(({id: id}));
+        wp_obj.append(function () {
+            return "<div class=\"sidebox\" id=\"" + id + "\">"
                 + "<label for=\"" + id + "_name\">Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\" value=\"Еда на выходные\"><br />"
+                + "<input type=\"text\" id=\"" + id + "_name\" value=\"Еда на выходные\"><br />"
                 + "<label for=\"" + id + "_price\">Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\" value=\"600\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_price\" value=\"600\"><br />"
                 + "<label for=\"" + id + "_date\">День</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_date\" value=\"5\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_date\" value=\"5\"><br />"
                 + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        var w3_id = id;
+        const w3_id = id;
         $(document.body).on("click", "#" + id + "_del", function () {
             $("#" + w3_id).remove();
         });
         id = "dp_" + make_id();
-        daily_payments.push(({id : id}));
-        $(".daily_payments").append(function(){
-            return "<div class=\"sidebox\" id=\""+ id +"\">"
+        daily_payments.push(({id: id}));
+        $(".daily_payments").append(function () {
+            return "<div class=\"sidebox\" id=\"" + id + "\">"
                 + "<label for=\"" + id + "_name\">Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\" value=\"Автобус\"><br />"
+                + "<input type=\"text\" id=\"" + id + "_name\" value=\"Автобус\"><br />"
                 + "<label for=\"" + id + "_price\">Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\" value=\"30\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_price\" value=\"30\"><br />"
                 + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
-        var d_id = id;
+        const d_id = id;
         $(document.body).on("click", "#" + id + "_del", function () {
             $("#" + d_id).remove();
         });
         id = "pp_" + make_id();
-        periodic_payments.push(({id : id}));
-        $(".periodic_payments").append(function(){
-            return "<div class=\"sidebox\" id=\""+ id +"\">"
+        periodic_payments.push(({id: id}));
+        $(".periodic_payments").append(function () {
+            return "<div class=\"sidebox\" id=\"" + id + "\">"
                 + "<label for=\"" + id + "_name\">Название</label><br />"
-                + "<input type=\"text\" id=\""+ id +"_name\" value=\"Сим\"><br />"
+                + "<input type=\"text\" id=\"" + id + "_name\" value=\"Сим\"><br />"
                 + "<label for=\"" + id + "_price\">Сумма</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_price\" value=\"1850\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_price\" value=\"1600\"><br />"
                 + "<label for=\"" + id + "_period\">Период</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_period\" value=\"28\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_period\" value=\"28\"><br />"
                 + "<label for=\"" + id + "_left\">Осталось до выплаты</label><br />"
-                + "<input type=\"number\" id=\""+ id +"_left\" value=\"21\"><br />"
+                + "<input type=\"number\" id=\"" + id + "_left\" value=\"21\"><br />"
                 + "<div class=\"delete_input btn\" id=\"" + id + "_del\">-</div>"
                 + "</div>"
         });
@@ -356,60 +384,60 @@ $(document).ready(function(){
     });
 
     $("#calc").click(function () {
-        var cash = parseInt($("#cash").val());
-        var change = parseInt($("#change").val());
-        var end_date = Date.parse($("#end_date").val());
-        var start_date = Date.parse($("#bound_date").val());
+        let cash = parseInt($("#cash").val());
+        let change = parseInt($("#change").val());
+        const end_date = new Date($("#end_date").val());
+        const start_date = new Date($("#bound_date").val());
 
-        window.income.forEach(function (t, i, ts) {
-            var t_arr = [];
+        income.forEach(function (t) {
+            const t_arr = [];
             t.name = $("#" + t.id + "_name").val();
             t_arr.push(parseInt($("#" + t.id + "_price").val()));
             t_arr.push($("#" + t.id + "_date").val());
             t.data = t_arr;
             t.part = 0;
         });
-        window.free_income.forEach(function (t, i, ts) {
-            var t_arr = [];
+        free_income.forEach(function (t) {
+            const t_arr = [];
             t.name = $("#" + t.id + "_name").val();
             t_arr.push(parseInt($("#" + t.id + "_price").val()));
             t_arr.push($("#" + t.id + "_date").val());
             t.data = t_arr;
             t.part = 0;
         });
-        window.month_payments.forEach(function (t, i, ts) {
-            var t_arr = [];
+        month_payments.forEach(function (t) {
+            const t_arr = [];
             t.name = $("#" + t.id + "_name").val();
             t_arr.push(parseInt($("#" + t.id + "_price").val()));
             t_arr.push($("#" + t.id + "_date").val());
             t.data = t_arr;
             t.part = 0;
         });
-        window.week_payments.forEach(function (t, i, ts) {
-            var t_arr = [];
+        week_payments.forEach(function (t) {
+            const t_arr = [];
             t.name = $("#" + t.id + "_name").val();
             t_arr.push(parseInt($("#" + t.id + "_price").val()));
             t_arr.push($("#" + t.id + "_date").val());
             t.data = t_arr;
             t.part = 0;
         });
-        window.daily_payments.forEach(function (t, i, ts) {
-            var t_arr = [];
+        daily_payments.forEach(function (t) {
+            const t_arr = [];
             t.name = $("#" + t.id + "_name").val();
             t_arr.push(parseInt($("#" + t.id + "_price").val()));
             t.data = t_arr;
             t.part = 0;
         });
-        window.extra_payments.forEach(function (t, i, ts) {
-            var t_arr = [];
+        extra_payments.forEach(function (t) {
+            const t_arr = [];
             t.name = $("#" + t.id + "_name").val();
             t_arr.push(parseInt($("#" + t.id + "_price").val()));
             t_arr.push($("#" + t.id + "_date").val());
             t.data = t_arr;
             t.part = 0;
         });
-        window.periodic_payments.forEach(function (t, number, ts) {
-            var t_arr = [];
+        periodic_payments.forEach(function (t) {
+            const t_arr = [];
             t.name = $("#" + t.id + "_name").val();
             t_arr.push(parseInt($("#" + t.id + "_price").val()));
             t_arr.push($("#" + t.id + "_period").val());
@@ -418,31 +446,31 @@ $(document).ready(function(){
             t.part = 0;
         });
 
-        var labels = [];
-        var temp_date = new Date(start_date);
+        const labels = [];
+        const temp_date = new Date(start_date);
 
-        var table_dataset = [];
+        const table_dataset = [];
 
-        var dataset_total = [];
-        var dataset_in = [];
-        var dataset_out = [];
-        var cash_today = 0;
+        const dataset_total = [];
+        const dataset_in = [];
+        const dataset_out = [];
+        let cash_today = 0;
 
-        while (end_date.getTime() >= temp_date.getTime()){
-            var cash_in = 0;
-            var cash_out = 0;
+        while (end_date.getTime() >= temp_date.getTime()) {
+            let cash_in = 0;
+            let cash_out = 0;
 
             income.forEach(function (t) {
-                if(temp_date.getDate() == t.data[1]){
-                    t.part +=  t.data[0];
+                if (temp_date.getDate() === new Date(t.data[1]).getDate()) {
+                    t.part += t.data[0];
                     cash += t.data[0];
                     cash_in += t.data[0];
                     table_dataset.push([temp_date.toLocaleDateString(), t.name, t.data[0], 0, cash, change]);
                 }
             });
             free_income.forEach(function (t) {
-                if(temp_date.getTime() == new Date(t.data[1]).getTime()){
-                    t.part +=  t.data[0];
+                if (temp_date.getDate() === new Date(t.data[1]).getDate()) {
+                    t.part += t.data[0];
                     cash += t.data[0];
                     cash_in += t.data[0];
                     table_dataset.push([temp_date.toLocaleDateString(), t.name, t.data[0], 0, cash, change]);
@@ -450,77 +478,75 @@ $(document).ready(function(){
             });
 
             month_payments.forEach(function (t) {
-                if(temp_date.getDate() == t.data[1]){
-                    t.part +=  t.data[0];
+                if (temp_date.getDate() === new Date(t.data[1]).getDate()) {
+                    t.part += t.data[0];
                     cash -= t.data[0];
                     cash_out += t.data[0];
                     table_dataset.push([temp_date.toLocaleDateString(), t.name, 0, t.data[0], cash, change]);
                 }
             });
             week_payments.forEach(function (t) {
-                if(temp_date.getDay() == t.data[1]){
-                    t.part +=  t.data[0];
+                if (temp_date.getDay() === new Date(t.data[1]).getDay()) {
+                    t.part += t.data[0];
                     cash -= t.data[0];
                     cash_out += t.data[0];
                     table_dataset.push([temp_date.toLocaleDateString(), t.name, 0, t.data[0], cash, change]);
                 }
             });
             daily_payments.forEach(function (t) {
-                if(change >= t.data[0]){
-                    change -= t.data[0]
-                    table_dataset.push([temp_date.toLocaleDateString(), t.name, 0, "0 (" + t.data[0] +")", cash, change]);
+                if (change >= t.data[0]) {
+                    change -= t.data[0];
+                    table_dataset.push([temp_date.toLocaleDateString(), t.name, 0, "0 (" + t.data[0] + ")", cash, change]);
                 }
-                else
-                {
-                    t.part +=  200;
+                else {
+                    t.part += 200;
                     change += 200;
                     cash -= 200;
                     cash_out += 200;
-                    change -=t.data[0];
-                    table_dataset.push([temp_date.toLocaleDateString(), t.name, "0 (200)", "200 (" + t.data[0] +")", cash, change]);
+                    change -= t.data[0];
+                    table_dataset.push([temp_date.toLocaleDateString(), t.name, "0 (200)", "200 (" + t.data[0] + ")", cash, change]);
                 }
             });
 
             periodic_payments.forEach(function (t) {
-                if(t.data[2] == 0){
-                    t.part +=  t.data[0];
+                if (t.data[2] === 0) {
+                    t.part += t.data[0];
                     cash -= t.data[0];
                     cash_out += t.data[0];
                     t.data[2] = t.data[1];
                     table_dataset.push([temp_date.toLocaleDateString(), t.name, 0, t.data[0], cash, change]);
                 }
-                else
-                {
+                else {
                     t.data[2] -= 1;
                 }
             });
             extra_payments.forEach(function (t) {
-                if(temp_date.getTime() == new Date(t.data[1]).getTime()){
-                    t.part +=  t.data[0];
+                if (temp_date.getDate() === new Date(t.data[1]).getDate()) {
+                    t.part += t.data[0];
                     cash -= t.data[0];
                     cash_out += t.data[0];
                 }
             });
 
-            if(cash_in != 0 || cash_out !=0){
+            if (cash_in !== 0 || cash_out !== 0) {
                 labels.push(temp_date.toLocaleDateString());
                 dataset_total.push(cash);
                 dataset_in.push(cash_in);
                 dataset_out.push(cash_out);
             }
 
-            var today = new Date();
-            if(temp_date.getFullYear() == today.getFullYear() && temp_date.getMonth() == today.getMonth() && temp_date.getDate() == today.getDate()){
+            const today = new Date();
+            if (temp_date.getFullYear() === today.getFullYear() && temp_date.getMonth() === today.getMonth() && temp_date.getDate() === today.getDate()) {
                 cash_today = cash;
             }
             temp_date.setDate(temp_date.getDate() + 1);
         }
-        var income_dataset = {
+        const income_dataset = {
             labels: [],
             color: [],
             data: []
         };
-        var payment_dataset = {
+        const payment_dataset = {
             labels: [],
             color: [],
             data: []
@@ -563,8 +589,7 @@ $(document).ready(function(){
         });
 
 
-
-        $("#short-resolt").html(
+        $("#short-result").html(
             "<h3>Сумма, которая должна быть сегодня:" + cash_today + "<br />" +
             "Итоговый остаток:" + cash + "<br />" +
             "Всего прибыли: " + income_dataset.data.reduce((a, b) => a + b, 0) + "<br />" +
@@ -573,8 +598,9 @@ $(document).ready(function(){
         $(".charts").html("<canvas id=\"graphic\"></canvas>\n" +
             "<canvas id=\"total-chart\"></canvas>");
 
-        var ctx = document.getElementById("graphic").getContext('2d');
-        var graph = new Chart(ctx, {
+        const ctx = document.getElementById("graphic").getContext('2d');
+        // noinspection Annotator
+        new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
@@ -602,7 +628,7 @@ $(document).ready(function(){
                     }]
             },
             options: {
-                tooltips:{
+                tooltips: {
                     mode: 'index'
                 },
                 scales: {
@@ -619,15 +645,15 @@ $(document).ready(function(){
             }
         });
 
-        var tctx = document.getElementById("total-chart").getContext('2d');
-        var myChart = new Chart(tctx, {
+        const tctx = document.getElementById("total-chart").getContext('2d');
+        new Chart(tctx, {
             type: 'pie',
             data: {
                 labels: income_dataset.labels.concat(payment_dataset.labels),
                 datasets: [{
-                        backgroundColor: payment_dataset.color.concat(payment_dataset.color),
-                        data: income_dataset.data.concat(payment_dataset.color)
-                    },
+                    backgroundColor: payment_dataset.color.concat(payment_dataset.color),
+                    data: income_dataset.data.concat(payment_dataset.color)
+                },
                     {
                         backgroundColor: payment_dataset.color.concat(payment_dataset.color),
                         data: income_dataset.color.concat(payment_dataset.data)
@@ -635,29 +661,29 @@ $(document).ready(function(){
             }
         });
 
-        var table = "<table class=\"table-fill\" width=100%><thead><tr><th>Дата</th><th>Описание</th><th>Прибыль</th><th>Траты</th><th>Балланс</th><th>Наличка</th></tr></thead><tbody class=\"table-hover\">";
+        let table = "<table class=\"table-fill\" width=100%><thead><tr><th>Дата</th><th>Описание</th><th>Прибыль</th><th>Траты</th><th>Балланс</th><th>Наличка</th></tr></thead><tbody class=\"table-hover\">";
 
         table_dataset.forEach(function (t) {
-           table += "<tr><td>" + t[0] + "</td><td>" + t[1] + "</td><td>" + t[2] + "</td><td>" + t[3] + "</td><td>" + t[4] + "</td><td>" + t[5] + "</td></tr>";
+            table += "<tr><td>" + t[0] + "</td><td>" + t[1] + "</td><td>" + t[2] + "</td><td>" + t[3] + "</td><td>" + t[4] + "</td><td>" + t[5] + "</td></tr>";
         });
-        table += "</tbody><tfoot><td></td></td><td>ИТОГ</td><td>" + income_dataset.data.reduce((a, b) => a + b, 0) + "</td><td>" + payment_dataset.data.reduce((a, b) => a + b, 0) + "</td><td>" + cash + "</td><td>" + change+ "</td></tr></tfoot></table>";
+        table += "</tbody><tfoot><td></td></td><td>ИТОГ</td><td>" + income_dataset.data.reduce((a, b) => a + b, 0) + "</td><td>" + payment_dataset.data.reduce((a, b) => a + b, 0) + "</td><td>" + cash + "</td><td>" + change + "</td></tr></tfoot></table>";
 
         $(".resolt-table").html(table);
     });
 });
 
 function make_id() {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (var i = 0; i < 5; i++)
+    let text = "";
+    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (let i = 0; i < 5; i++)
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     return text;
 }
 
 function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
