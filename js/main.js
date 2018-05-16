@@ -173,23 +173,10 @@ $(document).ready(function () {
     $("#reg").click(function () {
         flush();
 
-        const today = new Date();
-        let dd = today.getDate();
-        let mm = today.getMonth() + 1; //January is 0!
-        const year_flush = today.getFullYear();
-
-        if (dd < 10) {
-            dd = '0' + dd
-        }
-
-        if (mm < 10) {
-            mm = '0' + mm
-        }
-
-        $("#cash").val(0);
-        $("#bound_date").val(year_flush + '-' + mm + '-' + dd);
+        $("#cash").val(204042);
+        $("#bound_date").val("2018-05-16");
         $("#end_date").val("2018-11-07");
-        $("#change").val(0);
+        $("#change").val(200);
         let id = "i_" + make_id();
         income.push(({id: id}));
 
