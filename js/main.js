@@ -358,7 +358,7 @@ $(document).ready(function(){
     $("#calc").click(function () {
         var cash = parseInt($("#cash").val());
         var change = parseInt($("#change").val());
-        var end_date = new Date("2018-06-04");
+        var end_date = Date.parse($("#end_date").val());
         var start_date = Date.parse($("#bound_date").val());
 
         window.income.forEach(function (t, i, ts) {
